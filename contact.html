@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Engineers&Builder</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="logo.jpeg">
+    <title>Contact Us - Engineers&Builders</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -14,7 +15,7 @@
         <nav class="nav">
             <div class="nav-container">
                 <div class="logo">
-                    <img src="logo.jpeg" alt="Engineers&Builder Logo">
+                    <img src="logo.jpeg" alt="Engineers&Builder Logo" loading="lazy">
                     <a href="index.html" style="text-decoration: none;"><div class="logo-text">
                         <h1>
                             <span class="engineers">Engineers</span>
@@ -101,7 +102,7 @@
                         <h2>Send Us a Message</h2>
                         <p>Fill out the form below and we'll get back to you as soon as possible</p>
                     </div>
-                    <form class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm" action="https://formspree.io/f/xrbajnlk" method="post">
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName">First Name *</label>
@@ -162,13 +163,6 @@
                         <div class="form-group">
                             <label for="message">Message *</label>
                             <textarea id="message" name="message" rows="5" placeholder="Tell us about your project..." required></textarea>
-                        </div>
-                        <div class="form-group checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="newsletter" name="newsletter">
-                                <span class="checkmark"></span>
-                                Subscribe to our newsletter for project updates and tips
-                            </label>
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
@@ -328,7 +322,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="logo">
-                        <img src="logo.jpeg" alt="Engineers&Builder Logo">
+                        <img src="logo.jpeg" alt="Engineers&Builder Logo" loading="lazy">
                     </div>
                     <p>Engineers&Builders<br>Building Beyond Standards</p>
                     <div class="social-links">
@@ -359,7 +353,7 @@
                 <div class="footer-section">
                     <h3>Contact Info</h3>
                     <p><i class="fas fa-phone"></i>+918588835444</p>
-                    <p><i class="fas fa-envelope"></i>enginnerandbuilder01@gamil.com</p>
+                    <p><i class="fas fa-envelope"></i>engineersandbuilder01@gmail.com</p>
                     <p><i class="fas fa-map-marker-alt"></i>Supertech Czar Suits , Omicron 1 , Greater
                         Noida</p>
                 </div>

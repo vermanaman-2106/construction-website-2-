@@ -1,23 +1,23 @@
 // Mobile Navigation Toggle
 document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-    
+const hamburger = document.querySelector('.hamburger');
+const navMenu = document.querySelector('.nav-menu');
+
     if (hamburger && navMenu) {
         hamburger.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             console.log('Hamburger clicked!'); // Debug log
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
             document.body.classList.toggle('menu-open');
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
+});
+
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
                 document.body.classList.remove('menu-open');
             });
         });
@@ -49,15 +49,133 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Header background change on scroll
-window.addEventListener('scroll', () => {
+// Header scroll animation
+document.addEventListener('DOMContentLoaded', function() {
     const header = document.querySelector('.header');
-    if (window.scrollY > 100) {
-        header.style.background = 'rgba(255, 255, 255, 0.98)';
+    const heroSection = document.querySelector('.hero');
+    
+    if (header && heroSection) {
+        console.log('Header and hero section found, initializing animation');
+        
+        function updateHeader() {
+            const scrollY = window.scrollY;
+            const heroHeight = heroSection.offsetHeight;
+            
+            console.log('Scroll Y:', scrollY, 'Hero Height:', heroHeight);
+            
+            // Simple scroll-based detection
+            if (scrollY < heroHeight - 100) {
+                // In hero section - make header transparent
+                console.log('In hero section - making transparent');
+                header.classList.remove('scrolled');
+                header.classList.add('in-hero');
     } else {
-        header.style.background = 'rgba(255, 255, 255, 0.95)';
+                // Outside hero section - make header opaque
+                console.log('Outside hero section - making opaque');
+                header.classList.remove('in-hero');
+                header.classList.add('scrolled');
+            }
+        }
+        
+        // Initial call
+        updateHeader();
+        
+        // Listen for scroll events
+        window.addEventListener('scroll', updateHeader);
+        window.addEventListener('resize', updateHeader);
+    } else {
+        console.log('Header or hero section not found!');
     }
 });
+
+// Scroll Animation System
+document.addEventListener('DOMContentLoaded', function() {
+    // Create intersection observer for scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate');
+            }
+        });
+    }, observerOptions);
+
+    // Observe all elements with scroll animation classes
+    const animatedElements = document.querySelectorAll('.scroll-animate, .scroll-animate-left, .scroll-animate-right, .scroll-animate-scale');
+    animatedElements.forEach(el => {
+        observer.observe(el);
+    });
+
+    // Add scroll animation classes to existing elements
+    function addScrollAnimations() {
+        // Services section
+        const serviceCards = document.querySelectorAll('.service-card');
+        serviceCards.forEach((card, index) => {
+            card.classList.add('scroll-animate', `scroll-animate-delay-${(index % 5) + 1}`);
+        });
+
+        // Features section
+        const features = document.querySelectorAll('.feature');
+        features.forEach((feature, index) => {
+            feature.classList.add('scroll-animate', `scroll-animate-delay-${(index % 5) + 1}`);
+        });
+
+        // About section
+        const aboutContent = document.querySelector('.about-content');
+        if (aboutContent) {
+            aboutContent.classList.add('scroll-animate-left');
+        }
+
+        const aboutImage = document.querySelector('.about-image');
+        if (aboutImage) {
+            aboutImage.classList.add('scroll-animate-right');
+        }
+
+        // Section headers
+        const sectionHeaders = document.querySelectorAll('.section-header');
+        sectionHeaders.forEach(header => {
+            header.classList.add('scroll-animate');
+        });
+
+        // Project cards
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach((card, index) => {
+            card.classList.add('scroll-animate-scale', `scroll-animate-delay-${(index % 5) + 1}`);
+        });
+
+        // Team profiles
+        const teamProfiles = document.querySelectorAll('.team-profile');
+        teamProfiles.forEach((profile, index) => {
+            profile.classList.add('scroll-animate', `scroll-animate-delay-${(index % 3) + 1}`);
+        });
+
+        // Testimonials
+        const testimonials = document.querySelectorAll('.testimonial');
+        testimonials.forEach((testimonial, index) => {
+            testimonial.classList.add('scroll-animate', `scroll-animate-delay-${(index % 3) + 1}`);
+        });
+
+        // Stats
+        const statItems = document.querySelectorAll('.stat-item');
+        statItems.forEach((stat, index) => {
+            stat.classList.add('scroll-animate-scale', `scroll-animate-delay-${(index % 6) + 1}`);
+        });
+    }
+
+    // Initialize scroll animations
+    addScrollAnimations();
+
+    // Re-observe elements after adding classes
+    const newAnimatedElements = document.querySelectorAll('.scroll-animate, .scroll-animate-left, .scroll-animate-right, .scroll-animate-scale');
+    newAnimatedElements.forEach(el => {
+        observer.observe(el);
+    });
+});
+
 
 // Project Cost Estimator
 const costForm = document.getElementById('costForm');
@@ -123,28 +241,7 @@ costForm.addEventListener('submit', function(e) {
     estimateResult.scrollIntoView({ behavior: 'smooth' });
 });
 
-// Contact Form
-const contactForm = document.querySelector('.contact-form');
-contactForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(contactForm);
-    const name = contactForm.querySelector('input[type="text"]').value;
-    const email = contactForm.querySelector('input[type="email"]').value;
-    const subject = contactForm.querySelectorAll('input[type="text"]')[1].value;
-    const message = contactForm.querySelector('textarea').value;
-    
-    // Simple validation
-    if (!name || !email || !subject || !message) {
-        alert('Please fill in all fields');
-        return;
-    }
-    
-    // Simulate form submission
-    alert('Thank you for your message! We will get back to you soon.');
-    contactForm.reset();
-});
+// Contact Form - Removed old handler, using new Formspree handler below
 
 // ========================================
 // COMPREHENSIVE ANIMATION SYSTEM
@@ -290,7 +387,7 @@ document.querySelectorAll('.project-card').forEach(card => {
 document.querySelector('.fab-btn.whatsapp').addEventListener('click', function(e) {
     e.preventDefault();
     const message = "Hi! I'm interested in your construction and interior design services. Can you provide more information?";
-    const phoneNumber = "15551234567"; // Replace with actual phone number
+    const phoneNumber = "918588835444"; // Replace with actual phone number
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
 });
@@ -298,14 +395,11 @@ document.querySelector('.fab-btn.whatsapp').addEventListener('click', function(e
 // Call button functionality
 document.querySelector('.fab-btn.call').addEventListener('click', function(e) {
     e.preventDefault();
-    window.location.href = 'tel:+15551234567'; // Replace with actual phone number
+    window.location.href = 'tel:+918588835444'; // Replace with actual phone number
 });
 
 // Instagram button functionality
-document.querySelector('.fab-btn.instagram').addEventListener('click', function(e) {
-    e.preventDefault();
-    window.open('https://instagram.com/engineersbuilder', '_blank'); // Replace with actual Instagram handle
-});
+
 
 // Add loading animation
 window.addEventListener('load', () => {
@@ -376,61 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Enhanced Contact Form
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contactForm');
-    
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData);
-            
-            // Simple validation
-            const requiredFields = ['firstName', 'lastName', 'email', 'message'];
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                if (!data[field] || data[field].trim() === '') {
-                    isValid = false;
-                    const input = contactForm.querySelector(`[name="${field}"]`);
-                    input.style.borderColor = '#e74c3c';
-                } else {
-                    const input = contactForm.querySelector(`[name="${field}"]`);
-                    input.style.borderColor = '#e1e5e9';
-                }
-            });
-            
-            if (!isValid) {
-                alert('Please fill in all required fields');
-                return;
-            }
-            
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(data.email)) {
-                alert('Please enter a valid email address');
-                return;
-            }
-            
-            // Simulate form submission
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert('Thank you for your message! We will get back to you within 24 hours.');
-                contactForm.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        });
-    }
-});
+// Enhanced Contact Form - Removed conflicting handler, using Formspree handler below
 
 // Team Member Hover Effects
 document.addEventListener('DOMContentLoaded', () => {
@@ -673,14 +713,27 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Projects Carousel Functionality
-let currentCarouselIndex = 0;
-let carouselTrack = null;
-let carouselIndicators = [];
-let totalCarouselSlides = 0;
-let carouselInterval = null;
+var currentCarouselIndex = 0;
+var carouselTrack = null;
+var carouselIndicators = [];
+var totalCarouselSlides = 0;
+var carouselInterval = null;
 
+// Declare functions first
 function moveCarousel(direction) {
-    if (!carouselTrack) return;
+    console.log('moveCarousel called with direction:', direction);
+    
+    // Re-initialize if needed
+    if (!carouselTrack) {
+        carouselTrack = document.querySelector('.carousel-track');
+        carouselIndicators = document.querySelectorAll('.carousel-indicator');
+        totalCarouselSlides = carouselIndicators.length;
+    }
+    
+    if (!carouselTrack) {
+        console.log('Carousel track not found');
+        return;
+    }
     
     currentCarouselIndex += direction;
     
@@ -690,19 +743,33 @@ function moveCarousel(direction) {
         currentCarouselIndex = totalCarouselSlides - 1;
     }
     
+    console.log('New carousel index:', currentCarouselIndex);
     updateCarousel();
 }
 
 function currentCarouselSlide(index) {
+    console.log('currentCarouselSlide called with index:', index);
+    
+    // Re-initialize if needed
+    if (!carouselTrack) {
+        carouselTrack = document.querySelector('.carousel-track');
+        carouselIndicators = document.querySelectorAll('.carousel-indicator');
+        totalCarouselSlides = carouselIndicators.length;
+    }
+    
     currentCarouselIndex = index - 1;
     updateCarousel();
 }
 
 function updateCarousel() {
-    if (!carouselTrack) return;
+    if (!carouselTrack) {
+        console.log('Cannot update carousel - track not found');
+        return;
+    }
     
     const translateX = -currentCarouselIndex * 100;
     carouselTrack.style.transform = `translateX(${translateX}%)`;
+    console.log('Carousel updated - translateX:', translateX);
     
     // Update indicators
     carouselIndicators.forEach((indicator, index) => {
@@ -715,12 +782,10 @@ function autoPlayCarousel() {
     moveCarousel(1);
 }
 
-// Make functions globally available for onclick handlers
-window.moveCarousel = moveCarousel;
-window.currentCarouselSlide = currentCarouselSlide;
-
 // Initialize carousel
-document.addEventListener('DOMContentLoaded', function() {
+function initializeCarousel() {
+    console.log('Initializing carousel...');
+    
     // Get carousel elements
     carouselTrack = document.querySelector('.carousel-track');
     carouselIndicators = document.querySelectorAll('.carousel-indicator');
@@ -756,6 +821,345 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     } else {
-        console.log('No carousel found');
+        console.log('No carousel found or no indicators');
     }
+}
+
+// Make functions globally available for onclick handlers immediately
+window.moveCarousel = moveCarousel;
+window.currentCarouselSlide = currentCarouselSlide;
+
+// Form Submission Handling
+document.addEventListener('DOMContentLoaded', function() {
+    // Add form validation and enhancement
+    function enhanceForm(form) {
+        if (!form) return;
+        
+        // Add real-time validation
+        const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+            
+            input.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateField(this);
+                }
+            });
+        });
+        
+        // Add submit button enhancement
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', function(e) {
+                if (!validateForm(form)) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        }
+    }
+    
+    function validateField(field) {
+        const value = field.value.trim();
+        const isValid = value !== '' && field.checkValidity();
+        
+        if (isValid) {
+            field.classList.remove('error');
+            field.classList.add('valid');
+        } else {
+            field.classList.remove('valid');
+            field.classList.add('error');
+        }
+        
+        return isValid;
+    }
+    
+    function validateForm(form) {
+        const requiredFields = form.querySelectorAll('input[required], textarea[required], select[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!validateField(field)) {
+                isValid = false;
+            }
+        });
+        
+        return isValid;
+    }
+    // Handle contact form submission
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        enhanceForm(contactForm);
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm(contactForm)) {
+                alert('Please fill in all required fields correctly.');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Submit form
+            const formData = new FormData(contactForm);
+            fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Thank you! Your message has been sent successfully.');
+                    contactForm.reset();
+                    // Remove validation classes
+                    contactForm.querySelectorAll('.valid, .error').forEach(field => {
+                        field.classList.remove('valid', 'error');
+                    });
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                alert('Sorry, there was an error sending your message. Please try again.');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+    
+    // Handle popup form submission
+    const popupForm = document.getElementById('buildForm');
+    if (popupForm) {
+        enhanceForm(popupForm);
+        popupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm(popupForm)) {
+                alert('Please fill in all required fields correctly.');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = popupForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Submit form to Formspree
+            const formData = new FormData(popupForm);
+            fetch(popupForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Thank you! Your project inquiry has been sent successfully. We\'ll get back to you soon!');
+                    popupForm.reset();
+                    // Close popup
+                    document.getElementById('popupForm').style.display = 'none';
+                    document.body.classList.remove('popup-open');
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                alert('Sorry, there was an error sending your inquiry. Please try again.');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+    
+    // Handle resume form submission
+    const resumeForm = document.querySelector('.resume-form');
+    if (resumeForm) {
+        enhanceForm(resumeForm);
+        resumeForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm(resumeForm)) {
+                alert('Please fill in all required fields correctly.');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = resumeForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Submit form to Formspree
+            const formData = new FormData(resumeForm);
+            fetch(resumeForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Thank you! Your application has been submitted successfully. We\'ll review it and get back to you soon!');
+                    resumeForm.reset();
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                alert('Sorry, there was an error submitting your application. Please try again.');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+    
+    // Handle quick contact form submission (index.html)
+    const quickContactForm = document.querySelector('.contact-form:not(#contactForm):not(#buildForm)');
+    if (quickContactForm) {
+        enhanceForm(quickContactForm);
+        quickContactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm(quickContactForm)) {
+                alert('Please fill in all required fields correctly.');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = quickContactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            // Submit form to Formspree
+            const formData = new FormData(quickContactForm);
+            fetch(quickContactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Thank you! Your message has been sent successfully.');
+                    quickContactForm.reset();
+                    // Remove validation classes
+                    quickContactForm.querySelectorAll('.valid, .error').forEach(field => {
+                        field.classList.remove('valid', 'error');
+                    });
+                } else {
+                    throw new Error('Network response was not ok');
+                }
+            })
+            .catch(error => {
+                alert('Sorry, there was an error sending your message. Please try again.');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+    
+    // Handle cost estimator form
+    const costForm = document.getElementById('costForm');
+    if (costForm) {
+        enhanceForm(costForm);
+        costForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm(costForm)) {
+                alert('Please fill in all required fields correctly.');
+                return;
+            }
+            
+            // Show loading state
+            const submitBtn = costForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Calculating...';
+            submitBtn.disabled = true;
+            
+            // Collect form data
+            const formData = new FormData(costForm);
+            const data = Object.fromEntries(formData);
+            
+            // Basic cost calculation (you can enhance this)
+            let baseCost = 0;
+            const projectType = data.projectType;
+            const propertySize = parseInt(data.propertySize) || 0;
+            
+            switch(projectType) {
+                case 'residential':
+                    baseCost = propertySize * 1200; // Rs per sq ft
+                    break;
+                case 'commercial':
+                    baseCost = propertySize * 1800;
+                    break;
+                case 'renovation':
+                    baseCost = propertySize * 800;
+                    break;
+                case 'interior':
+                    baseCost = propertySize * 600;
+                    break;
+                default:
+                    baseCost = propertySize * 1000;
+            }
+            
+            // Add additional services
+            const additionalServices = data.additionalServices || [];
+            additionalServices.forEach(service => {
+                switch(service) {
+                    case 'design':
+                        baseCost += 50000;
+                        break;
+                    case 'permit':
+                        baseCost += 25000;
+                        break;
+                    case 'inspection':
+                        baseCost += 15000;
+                        break;
+                }
+            });
+            
+            // Show estimated cost
+            setTimeout(() => {
+                alert(`Estimated Cost: ₹${baseCost.toLocaleString()}\n\nThis is a rough estimate. For accurate pricing, please contact us directly.`);
+                
+                // Reset form
+                costForm.reset();
+                
+                // Reset button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 1500);
+        });
+    }
+});
+
+// Initialize carousel when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing carousel...');
+    initializeCarousel();
 });

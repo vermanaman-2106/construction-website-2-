@@ -182,7 +182,7 @@ The website uses a consistent color scheme:
 
 **Engineers & Builders**
 - **Phone**: +91 7007984931, +91 85888 35444, +91 95608 47658
-- **Email**: enginnersandbuilders01@gmail.com
+- **Email**: engineersandbuilders01@gmail.com
 - **Address**: Supertech Czar Suits, Omicron 1, Greater Noida, UP
 - **WhatsApp**: [Direct WhatsApp Link](https://wa.me/917007984931)
 - **Instagram**: [@engineers_builders01](https://www.instagram.com/engineers_builders01)
@@ -254,7 +254,7 @@ For internal development and updates:
 ## 📞 Support
 
 For technical support or questions about the website:
-- **Email**: enginnersandbuilders01@gmail.com
+- **Email**: engineersandbuilders01@gmail.com
 - **Phone**: +91 7007984931
 - **WhatsApp**: [Contact via WhatsApp](https://wa.me/917007984931)
 
