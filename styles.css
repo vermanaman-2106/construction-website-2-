@@ -464,6 +464,7 @@ p {
     color: white;
     position: relative;
     padding: 0 2rem;
+    loading: lazy;
 }
 
 .hero-content {
