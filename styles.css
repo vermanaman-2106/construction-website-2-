@@ -453,7 +453,7 @@ p {
 /* Hero Section */
 .hero {
     height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('hero.jpeg');
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('hero.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -535,6 +535,8 @@ p {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     letter-spacing: 1px;
+    text-shadow: 0 4px 8px rgba(44, 62, 80, 0.3);
+    line-height: 1.2;
 }
 
 .section-header p {
@@ -568,6 +570,16 @@ p {
 
 .about-text h2 {
     margin-bottom: 2rem;
+    text-align: center !important;
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 8px rgba(44, 62, 80, 0.3);
+    letter-spacing: 1px;
+    line-height: 1.2;
 }
 
 .about-text p {
@@ -623,6 +635,10 @@ p {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(230, 104, 60, 0.4);
     background: linear-gradient(135deg, #d55a2b, #e0852a);
+}
+
+.about-image {
+    margin-top: -2rem;
 }
 
 .about-image img {
@@ -1899,12 +1915,15 @@ p {
 .services-overview .section-header h2 {
     font-size: 3.5rem;
     font-weight: 900;
-    background: linear-gradient(135deg, #2c3e50 0%, #e6683c 50%, #f09433 100%);
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     margin-bottom: 2rem;
     text-align: center;
+    text-shadow: 0 4px 8px rgba(44, 62, 80, 0.3);
+    letter-spacing: 1px;
+    line-height: 1.2;
 }
 
 .services-overview .section-header p {
@@ -2466,16 +2485,16 @@ p {
 }
 
 .portfolio-section .section-header h2 {
-    background: linear-gradient(135deg, #e6683c 0%, #f09433 50%, #e6683c 100%);
-    background-size: 200% 200%;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: gradientShift 3s ease-in-out infinite;
     font-size: 3.5rem;
     font-weight: 900;
     margin-bottom: 1.5rem;
-    text-shadow: 0 0 30px rgba(230, 104, 60, 0.3);
+    text-shadow: 0 4px 8px rgba(44, 62, 80, 0.3);
+    letter-spacing: 1px;
+    line-height: 1.2;
 }
 
 @keyframes gradientShift {
@@ -5732,5 +5751,18 @@ body {
     .service-cta .btn {
         padding: 0.8rem 1.2rem;
         font-size: 0.85rem;
+    }
+}
+
+/* Gradient Animation Keyframes */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
     }
 }
