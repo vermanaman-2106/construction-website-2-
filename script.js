@@ -1163,3 +1163,24 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing carousel...');
     initializeCarousel();
 });
+
+// Lazy play/pause Instagram videos when in viewport
+document.addEventListener('DOMContentLoaded', () => {
+    const instaVideos = document.querySelectorAll('.instagram video[data-autoplay]');
+    if (instaVideos.length === 0) return;
+    const vidObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+                if (video.paused) {
+                    // Start loading only when needed
+                    if (video.preload !== 'auto') video.preload = 'auto';
+                    video.play().catch(() => {});
+                }
+            } else {
+                if (!video.paused) video.pause();
+            }
+        });
+    }, { threshold: 0.25 });
+    instaVideos.forEach(v => vidObserver.observe(v));
+});
