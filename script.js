@@ -445,6 +445,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// --------- Image performance optimizations ---------
+document.addEventListener('DOMContentLoaded', () => {
+    // Ensure all non-critical images are lazy and decode async
+    document.querySelectorAll('img').forEach(img => {
+        const isLogo = img.closest('.logo');
+        const isHero = img.closest('.hero');
+        if (!isLogo && !isHero) {
+            if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+            if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+        } else {
+            // Even for important images, prefer async decode to avoid main thread block
+            if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+        }
+        // Add width/height if missing to reduce layout shift (best-effort from natural sizes once loaded)
+        if (!img.hasAttribute('width') || !img.hasAttribute('height')) {
+            img.addEventListener('load', () => {
+                if (!img.hasAttribute('width')) img.setAttribute('width', img.naturalWidth);
+                if (!img.hasAttribute('height')) img.setAttribute('height', img.naturalHeight);
+            }, { once: true });
+        }
+    });
+});
+
 // FAQ Functionality
 document.addEventListener('DOMContentLoaded', () => {
     const faqItems = document.querySelectorAll('.faq-item');

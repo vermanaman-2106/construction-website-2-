@@ -637,6 +637,26 @@ p {
     flex-wrap: wrap;
 }
 
+/* Performance: avoid rendering offscreen sections until needed */
+.services,
+.about,
+.why-choose,
+.why-choose-us,
+.projects,
+.instagram,
+.cost-estimator,
+.testimonials,
+.contact,
+.projects-gallery,
+.portfolio-section,
+.project-testimonials,
+.our-workplace,
+.certifications,
+.company-stats {
+    content-visibility: auto;
+    contain-intrinsic-size: 1000px 800px;
+}
+
 /* Ensure hero tagline is visible on small devices by placing it at the end */
 @media (max-width: 768px) {
     .hero-content {
