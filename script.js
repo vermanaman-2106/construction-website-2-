@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeCounterAnimations() {
     const statNumbers = document.querySelectorAll('.stat-number');
     
-    const animateCounter = (element, target) => {
+    const animateCounter = (element, target, suffix) => {
         let current = 0;
         const increment = target / 100;
         const timer = setInterval(() => {
@@ -294,7 +294,8 @@ function initializeCounterAnimations() {
                 current = target;
                 clearInterval(timer);
             }
-            element.textContent = Math.floor(current) + (target >= 100 ? '+' : '');
+            const value = Math.floor(current);
+            element.textContent = `${value}${suffix}`;
         }, 20);
     };
     
@@ -302,9 +303,13 @@ function initializeCounterAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const text = entry.target.textContent;
-                const number = parseInt(text.replace(/\D/g, ''));
+                const number = parseInt(text.replace(/[^\d]/g, ''));
+                // Detect and preserve the exact suffix used in markup
+                const hasPercent = /%/.test(text);
+                const hasPlus = /\+/.test(text);
+                const suffix = hasPercent ? '%' : (hasPlus ? '+' : '');
                 if (number) {
-                    animateCounter(entry.target, number);
+                    animateCounter(entry.target, number, suffix);
                 }
                 counterObserver.unobserve(entry.target);
             }
@@ -660,48 +665,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Handle form submission
-    if (buildForm) {
-        buildForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(buildForm);
-            const formObject = {};
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
-
-            // Basic validation
-            const requiredFields = ['name', 'email', 'phone', 'project-type'];
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                const input = document.getElementById(field);
-                if (!formObject[field] || formObject[field].trim() === '') {
-                    input.style.borderColor = '#e6683c';
-                    isValid = false;
-                } else {
-                    input.style.borderColor = '#e0e0e0';
-                }
-            });
-
-            if (isValid) {
-                // Here you would typically send the data to your server
-                // For now, we'll just show a success message
-                alert('Thank you for your interest! We will contact you soon.');
-                
-                // Reset form
-                buildForm.reset();
-                
-                // Close popup
-                popupOverlay.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            } else {
-                alert('Please fill in all required fields.');
-            }
-        });
-    }
+    // Note: submission is handled by the unified Formspree handler below
 
     // Close popup with Escape key
     document.addEventListener('keydown', function(e) {
@@ -969,9 +933,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.ok) {
                     alert('Thank you! Your project inquiry has been sent successfully. We\'ll get back to you soon!');
                     popupForm.reset();
-                    // Close popup
-                    document.getElementById('popupForm').style.display = 'none';
-                    document.body.classList.remove('popup-open');
+                    // Close popup consistently
+                    const overlay = document.getElementById('popupForm');
+                    if (overlay) {
+                        overlay.classList.remove('active');
+                    }
+                    document.body.style.overflow = 'auto';
                 } else {
                     throw new Error('Network response was not ok');
                 }
@@ -1184,3 +1151,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.25 });
     instaVideos.forEach(v => vidObserver.observe(v));
 });
+
+// ---------- Popup Form Deep-Linking & Global Open Helper ----------
+// Usage:
+//  - Add a link <a href="#popup">Get Quote</a> anywhere to open the popup
+//  - Open page with #popup or #get-quote in URL to auto-open the popup
+//  - Call window.openBuildPopup() from console or other code
+(function() {
+    function openBuildPopup() {
+        const overlay = document.getElementById('popupForm');
+        if (!overlay) return;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeBuildPopup() {
+        const overlay = document.getElementById('popupForm');
+        if (!overlay) return;
+        overlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Expose helpers
+    window.openBuildPopup = openBuildPopup;
+    window.closeBuildPopup = closeBuildPopup;
+
+    // Click on any link with href="#popup" should open the popup
+    document.addEventListener('click', function(e) {
+        const target = e.target.closest('a[href="#popup"]');
+        if (target) {
+            e.preventDefault();
+            openBuildPopup();
+        }
+    });
+
+    // Auto-open when URL hash matches
+    document.addEventListener('DOMContentLoaded', function() {
+        const hash = (window.location.hash || '').toLowerCase();
+        if (hash === '#popup' || hash === '#get-quote') {
+            // give DOM a tick to render before opening
+            setTimeout(openBuildPopup, 50);
+        }
+    });
+})();
